@@ -1,0 +1,32 @@
+<html>
+<head>
+<script type='text/javascript'>
+window.onload=function(){
+function setImage() {
+    var img = document.getElementById("image");
+    img.src = this.value;
+    return false;
+}
+document.getElementById("ImageList").onchange = setImage;
+}
+
+</script>
+
+
+</head>
+<body>
+ 
+<select id="ImageList">
+     <option value="images/transimage.gif">Select Image</option>
+    <option value="https://scontent.cdninstagram.com/v/t51.2885-15/sh0.08/e35/s640x640/88960882_2597693450515099_6054683987378368766_n.jpg?_nc_ht=scontent.cdninstagram.com&_nc_ohc=6FDDkeduonYAX-LCnig&oh=15262ef1995bd385aed2af60c7852644&oe=5E9241FD">
+Image 1</option>
+    <option value="https://scontent.cdninstagram.com/v/t51.2885-15/sh0.08/e35/s640x640/88960882_2597693450515099_6054683987378368766_n.jpg?_nc_ht=scontent.cdninstagram.com&_nc_ohc=6FDDkeduonYAX-LCnig&oh=15262ef1995bd385aed2af60c7852644&oe=5E9241FD">
+Image 2</option>
+</select>
+   
+<p><img id="image" src="images/transimage.gif" /></p>
+ 
+</body>
+
+
+</html>

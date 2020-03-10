@@ -2,16 +2,32 @@
 <html lang="en" >
 <head>
   <meta charset="UTF-8">
-  <title>roho7nailz.com</title>
+  <title class="paragraph">roho7nailz.com</title>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
 <link rel="stylesheet" href="css/magnific-popup.css">
 	<link rel='stylesheet' href='https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css'>
+
+<link rel="shortcut icon" type="image/png" href="imgs/favicon.png"/>
+
+	<style>
+		@font-face {
+			src: url(css/old.ttf);
+			font-family: nos;
+		}
+		.body{
+			background: black;
+		}
+		.paragraph {
+			font-size: 50px;
+			line-height: 62px;
+			font-family: nos;
+		}
+	</style>
+
+
 <style>
-	
-	@import url('https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i');
-body {
-  font-family: 'Lato', "Helvetica", Arial, sans-serif;
-}
+
+
 
 /* remove bootstrap gutter*/
 .row.no-gutter {
@@ -37,7 +53,7 @@ body {
 
 .img-featured-container img {
   width: 100%;
- padding: 10px; 
+ padding: 10px;
 }
 
 .img-featured-container .img-backdrop {
@@ -118,7 +134,7 @@ body {
   }
 }</style>
 	<style>
-	@import url(https://fonts.googleapis.com/css?family=Josefin+Sans:300,400);
+
 * {
   margin: 0;
   padding: 0;
@@ -155,25 +171,24 @@ section h1 {
 }
 
 #section01 { background: url(https://drive.google.com/uc?export=view&id=1NpohKbJETY0hBkwnlK50JpIFgTUaDy9c) center center / cover no-repeat;}
-	
+
 	</style>
 </head>
 <body>
-	
+
 	<section id="section01" class="demo">
-  <h1>roho7nailz</h1>
-		
-  <a href="#section02"><span></span>Scroll</a>
+  <h1 class="paragraph">roho7nailz</h1>
+
 </section>
 
 
 
-	
+
 <!-- partial:index.partial.html -->
 <div id="instafeed-gallery-feed" class="gallery row no-gutter">
 
 <!--  instagram feed will load here - markup below was used to structure images before loading them through instafeed -->
-  
+
 <!--   <div class="col-xs-12 col-sm-4">
     <a href="{{image}}" data-caption="{{model.user.username}}, {{likes}} likes">
         <div class="img-featured-container">
@@ -192,7 +207,7 @@ section h1 {
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/instafeed.js/1.4.1/instafeed.min.js'></script>
 
-	
+
 	<script>
 	// How to get an access token:
 // http://jelled.com/instagram/access-token
@@ -210,7 +225,7 @@ userId: 8306777100,
   resolution: "standard_resolution",
   useHttp: "true",
   limit: 6,
-  template: '<div class="col-xs-12 col-sm-6 col-md-4"><a href="https://stormy-wildwood-03421.herokuapp.com"><div class="img-featured-container"><div class="img-backdrop"></div><div class="description-container"><p class="caption">{{caption}}</p><span class="likes"><i class="icon ion-heart"></i> {{likes}}</span><span class="comments"><i class="icon ion-chatbubble"></i> {{comments}}</span></div><img src="{{image}}" class="img-responsive"></div></a></div>',
+  template: '<div class="col-xs-12 col-sm-6 col-md-4"><a href="https://roho7nailzform.herokuapp.com/"><div class="img-featured-container"><div class="img-backdrop"></div><div class="description-container"><p class="caption">{{caption}}</p><span class="likes"><i class="icon ion-heart"></i> {{likes}}</span><span class="comments" ><i class="icon ion-chatbubble"></i> {{comments}}</span></div><img src="{{image}}" class="img-responsive"></div></a></div>',
   target: "instafeed-gallery-feed",
   after: function() {
     // disable button if no more results to load
@@ -225,7 +240,7 @@ var btnInstafeedLoad = document.getElementById("btn-instafeed-load");
 btnInstafeedLoad.addEventListener("click", function() {
   galleryFeed.next()
 });
-	
+
 	</script>
 
 </body>
