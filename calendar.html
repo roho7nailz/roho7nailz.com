@@ -1,32 +1,133 @@
-<html>
+<!DOCTYPE html>
+<html lang="en" >
 <head>
-<script type='text/javascript'>
-window.onload=function(){
-function setImage() {
-    var img = document.getElementById("image");
-    img.src = this.value;
-    return false;
+	
+<link rel="shortcut icon" type="image/png" href="imgs/favicon.png"/>
+  <meta charset="UTF-8">
+     <title>roho7nailz.com</title>
+  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css'>
+<link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.1.1/fullcalendar.min.css'><link rel="stylesheet" href="./style.css">
+<style>body{
+  padding-top: 50px;
 }
-document.getElementById("ImageList").onchange = setImage;
-}
-
-</script>
-
-
+.fc-content { white-space: normal !important; padding: 7px}
+.fc-day-grid-event { margin-bottom: 9px;  }</style>
 </head>
 <body>
- 
-<select id="ImageList">
-     <option value="images/transimage.gif">Select Image</option>
-    <option value="https://scontent.cdninstagram.com/v/t51.2885-15/sh0.08/e35/s640x640/88960882_2597693450515099_6054683987378368766_n.jpg?_nc_ht=scontent.cdninstagram.com&_nc_ohc=6FDDkeduonYAX-LCnig&oh=15262ef1995bd385aed2af60c7852644&oe=5E9241FD">
-Image 1</option>
-    <option value="https://scontent.cdninstagram.com/v/t51.2885-15/sh0.08/e35/s640x640/88960882_2597693450515099_6054683987378368766_n.jpg?_nc_ht=scontent.cdninstagram.com&_nc_ohc=6FDDkeduonYAX-LCnig&oh=15262ef1995bd385aed2af60c7852644&oe=5E9241FD">
-Image 2</option>
-</select>
+	
+       
+                <div class="navbar navbar-expand navbar-dark bg-dark">
    
-<p><img id="image" src="images/transimage.gif" /></p>
- 
+    <a  class="pink nav-item nav-link" href="index.html">Home</a>
+	<a  class="pink nav-item nav-link" href="form.html">form</a>
+      <a  class="pink nav-item nav-link" href="calendar.html">Calendar</a>
+
+    </div>
+<!-- partial:index.partial.html -->
+<div class="container">
+  <div class="row">
+    <div id="calendar"></div>
+  </div>
+</div>
+<!-- partial -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+<script src='https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.3/moment.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/2.1.1/fullcalendar.js'></script><script  src="./script.js"></script>
+<script>$(document).ready(function() {
+    
+    var eventDataSourceURL = 'https://www.googleapis.com/calendar/v3/calendars/6ja28lpkjv61vegnh4pl582i2g@group.calendar.google.com/events?key=AIzaSyBdvgAdiim7KBSoju7I00L4fbTz6fKXokU';
+   
+    var calendarupdateInterval = 5000;  // RE-FETCH INTERVAL FOR GOOGLE CALENDAR DATA
+    var calendarAddedtoPage = false;    // FLAG TO DETECT IF CALENDAR HAS PREVIOUSLY BEEN ADDED OR NEEDS TO BE ADDED
+    var eventsArray = [];               // EMPTY ARRAY WE'LL USE TO HOLD OUR EVENTS
+
+    
+    // FUNCTION TO GET THE JSON DATA FROM GOOGLE CALENDAR API IN JSON FORMAT
+    function getData() {
+        eventsArray = [];   // EMPTY THE ARRAY EACH TIME WE START THIS OR WILL HAVE DUPLICATE EVENTS IN ARRAY
+        $.getJSON(
+            eventDataSourceURL,
+            function(result) {
+                
+                // THE JSON DATA FROM GOOGLE IS NOT IN THE FORMAT THAT FULLCALENDAR NEEDS, SO WE'LL LOOP THROUGH AND BUILD OUR OWN ARRAY TO USE
+                $.each(result.items, function(i, val) {
+                    // IF THE STATUS IS CONFIRMED AND IT HAS A START DATE AND TIME... OTHERWISE WE MAY LACK DATA NEEDED TO ADD TO CALENDAR...
+                    if (result.items[i].status === "confirmed" && result.items[i].start.dateTime) {
+                        // WHEN WE ENCOUNTER AN EVENT WITH NO 'SUMMARY' TEXT (THE EVENT TITLE), WE NEED TO SET SOME TEXT SINCE THE CODE AND CALENDAR EXPECTS IT 
+                        if (!result.items[i].summary){
+                                result.items[i].summary = 'No Summary found in google calendar'
+                        }
+                        // THEN WE ADD IT TO OUR EVENTS ARRAY...
+                        eventsArray.push({
+                            title: val.summary.replace(/['"]+/g, "") + '\n -- event #'+i,  // THE TITLE ELEMENT OF THE ARRAY, REMOVING ANY QUOTES THOUGH...
+                            start: val.start.dateTime   // THE DATE AND TIME FOR THE EVENT
+                        });
+                    } else {
+                        console.log("could not add due to lacking data ... event date/time or status not confirmed");
+                    }
+                });
+                
+               //TEST REMOVE THE 15TH ARRAY ITEM 
+               //if (calendarAddedtoPage == true){
+               //    eventsArray.splice(15,1);
+               //}
+                
+                
+                // RUN OUR DRAW CALENDAR FUNCTION TO EITHER ADD THE CALENDAR AND POPULATE WITH DATA OR UPDATE THE CALENDAR WITH NEWLY ACQUIRED DATA...
+                drawCalendar();
+                
+                
+            }
+        );
+    }
+
+
+
+    function drawCalendar() {
+        // IF THE CALENDAR HAS NOT BEEN ALREADY ADDED TO THE PAGE...
+        if (calendarAddedtoPage == false) {
+            calendarAddedtoPage = true;
+            // CALENDAR HAS NOT BEEN DRAWN ONCE SO WE ARE ADDING IT TO DOM
+            console.log('Create NEW Calendar for dom ' + new Date())
+            $("#calendar").fullCalendar({
+                defaultView: "month", //Possible Values: month, basicWeek, basicDay, agendaWeek, agendaDay
+                header: {
+                    left: "title",
+                    center: "",
+                    //right: "today,prevYear,prev,next,nextYear" //Possible Values: month, basicWeek, basicDay, agendaWeek, agendaDay, today prevYear,prev,next,nextYear
+                    right: 'agendaDay,agendaWeek,month,prev,next'
+                },
+                buttonIcons: {
+                    prev: "left-single-arrow",
+                    next: "right-single-arrow",
+                    prevYear: "left-double-arrow",
+                    nextYear: "right-double-arrow"
+                }
+                
+            });
+            $("#calendar").fullCalendar("removeEventSources" );     // JUST TO MAKE SURE NOTHINGS IN CALENDAR... PROBABLY OVERKIILL, BUT WHAT THE HELL...
+            $("#calendar").fullCalendar("addEventSource", eventsArray); // ADD THE NEW ARRAY OF DATA TO THE CALENDAR
+            
+            // START A x SECOND LOOP WHERE WE RE-RUN THE GET DATA FUNCTION AND START IT ALL OVER AGAIN...
+            setInterval(function(){
+                getData()
+            }, calendarupdateInterval)
+            
+        } else if (calendarAddedtoPage == true) {
+            // CALENDAR HAS ALREADY BEEN DRAWN ONCE, SO JUST UPDATE THE DATA WITH NEW EVENTS ARRAY RETRIEVED...
+            console.log('Updating calendar data - ' + new Date())
+            
+            $("#calendar").fullCalendar( 'removeEvents');  // JUST TO MAKE SURE NOTHINGS IN CALENDAR... PROBABLY OVERKIILL, BUT WHAT THE HELL...
+            $("#calendar").fullCalendar( 'addEventSource', eventsArray ) // ADD THE NEW ARRAY OF DATA TO THE CALENDAR
+           
+        }
+        
+        
+    }
+    
+    // START THINGS OFF AND GET THIS PARTY STARTED... BASICALLY CALLING THE FIRST FUNCTION THAT SETS IT INTO MOTION...
+    getData();
+});</script>
 </body>
-
-
 </html>
